@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using these metadata."
+type: software
+title: "Time-Series Forecasting Lab"
+abstract: >-
+  Reproducible time-series modelling, forecasting, diagnostics,
+  rolling validation, and volatility analysis on documented synthetic
+  data-generating processes.
+authors:
+  - family-names: Thomas
+    given-names: Pavanam
+    email: thomaspavanam@gmail.com
+    affiliation: Independent researcher
+license: MIT
+version: 0.1.0
+date-released: "2026-08-19"
+repository-code: "https://github.com/pavanamthomas/time-series-forecasting-lab"
+keywords:
+  - time series
+  - forecasting
+  - ARIMA
+  - exponential smoothing
+  - rolling origin
+  - GARCH
+  - forecast validation
