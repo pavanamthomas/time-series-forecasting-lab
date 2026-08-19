@@ -173,6 +173,56 @@ def fit_garch11(
     )
 
 
+def _obs_nll(params: np.ndarray, r: np.ndarray) -> np.ndarray:
+    omega, alpha, beta = (float(p) for p in params)
+    sigma2 = garch11_variance(r, omega, alpha, beta)
+    return 0.5 * (np.log(2.0 * np.pi) + np.log(sigma2) + r**2 / sigma2)
+
+
+def garch11_sandwich_se(result: GARCH11Result, *, step: float = 1e-5) -> dict[str, float]:
+    """Outer-product / Hessian sandwich standard errors for GARCH(1,1) QMLE.
+
+    Scores are obtained by finite differences of the observation-wise
+    Gaussian quasi-log-likelihood. The Hessian is the Jacobian of the
+    summed scores. This is a numerical sandwich, not an analytic score
+    recursion, and it inherits the Gaussian quasi-likelihood.
+    """
+
+    r = np.asarray(result.returns, dtype=float).ravel()
+    theta = np.array([result.omega, result.alpha, result.beta], dtype=float)
+    k = theta.size
+    n = r.size
+    scores = np.empty((n, k), dtype=float)
+    for j in range(k):
+        bumped = theta.copy()
+        bumped[j] += step
+        scores[:, j] = (_obs_nll(bumped, r) - _obs_nll(theta, r)) / step
+    meat = scores.T @ scores
+    # Hessian of total nll ≈ J^T of mean scores times n, via another difference
+    hessian = np.empty((k, k), dtype=float)
+    total = scores.sum(axis=0)
+    for j in range(k):
+        bumped = theta.copy()
+        bumped[j] += step
+        scores_b = np.empty((n, k), dtype=float)
+        for m in range(k):
+            db = bumped.copy()
+            db[m] += step
+            scores_b[:, m] = (_obs_nll(db, r) - _obs_nll(bumped, r)) / step
+        hessian[:, j] = (scores_b.sum(axis=0) - total) / step
+    try:
+        h_inv = np.linalg.inv(hessian)
+        vcov = h_inv @ meat @ h_inv
+        se = np.sqrt(np.maximum(np.diag(vcov), 0.0))
+    except np.linalg.LinAlgError:
+        se = np.full(k, np.nan)
+    return {
+        "se_omega": float(se[0]),
+        "se_alpha": float(se[1]),
+        "se_beta": float(se[2]),
+    }
+
+
 def squared_acf_lag1(returns: np.ndarray) -> float:
     """Lag-1 sample autocorrelation of squared returns."""
 

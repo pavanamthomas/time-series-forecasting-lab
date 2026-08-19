@@ -490,7 +490,61 @@ def chow_test(
         note=(
             "Known-break Chow test under iid Gaussian errors and a linear "
             "specification. Heteroskedasticity or a misstated break date "
-            "invalidates the F reference distribution."
+            "invalidates the F reference distribution. For an unknown break, "
+            "use sup_chow; the single-date p-value does not apply to the sup."
+        ),
+    )
+
+
+@dataclass(frozen=True)
+class SupChowResult:
+    break_index: int
+    f_stat: float
+    path: pd.DataFrame
+    min_frac: float
+    note: str
+
+
+def sup_chow(
+    y: pd.Series,
+    *,
+    min_frac: float = 0.2,
+    trend: bool = False,
+) -> SupChowResult:
+    """Search for a break date by maximising the Chow F on a trimmed grid.
+
+    This is a Quandt-style sup-F search. Conventional Chow p-values are not
+    valid for the maximised statistic. The returned date is an estimate of
+    T_b under a single mean (or trend) shift, not a proof of a unique break.
+    """
+
+    v = np.asarray(y, dtype=float).ravel()
+    n = v.size
+    if not 0.05 <= min_frac < 0.45:
+        raise ValueError("min_frac must lie in [0.05, 0.45).")
+    lo = max(4, int(np.floor(min_frac * n)))
+    hi = n - lo
+    if hi <= lo:
+        raise ValueError("series too short for a trimmed break search.")
+    rows: list[dict[str, float]] = []
+    best_i = lo
+    best_f = -np.inf
+    series = pd.Series(v)
+    for i in range(lo, hi):
+        res = chow_test(series, i, trend=trend)
+        f_stat = float(res.f_stat)
+        rows.append({"break_index": float(i), "f_stat": f_stat})
+        if np.isfinite(f_stat) and f_stat > best_f:
+            best_f = f_stat
+            best_i = i
+    return SupChowResult(
+        break_index=int(best_i),
+        f_stat=float(best_f),
+        path=pd.DataFrame(rows),
+        min_frac=float(min_frac),
+        note=(
+            "Sup-F search over break dates. Do not use a single Chow p-value "
+            "as the null distribution of the maximised F."
         ),
     )
 
