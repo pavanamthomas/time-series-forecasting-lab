@@ -304,20 +304,30 @@ def _misspecification_trend(catalog: dict) -> None:
     )
     from tsforecast.metrics import error_summary
 
+    fc_ar1, _, _ = forecast_from_origin(
+        y,
+        ARIMAForecaster(order=(1, 0, 0), name="ARIMA(1,0,0)_no_difference"),
+        origin,
+        horizon=24,
+    )
+    fit_ar1 = fit_arima(y.iloc[: origin + 1], order=(1, 0, 0))
+    phi_by_model = {
+        fc_bad.name: ar_lag1_coefficient(fit_bad),
+        fc_ar1.name: ar_lag1_coefficient(fit_ar1),
+    }
     rows = []
-    for fc in (fc_bad, fc_tr, fc_nv, fc_d):
+    for fc in (fc_bad, fc_ar1, fc_tr, fc_nv, fc_d):
         rows.append(
             {
                 "series": "simulated_trend_only",
                 "origin": origin,
                 "model": fc.name,
-                "ar_lag1": (
-                    ar_lag1_coefficient(fit_bad) if "2, 0, 2" in fc.name else np.nan
-                ),
+                "ar_lag1": phi_by_model.get(fc.name, np.nan),
                 **error_summary(test.to_numpy(), fc.point, train.to_numpy()),
                 "note": (
                     "Undifferenced ARIMA on a linear trend can fit in sample "
-                    "while losing to a correctly specified trend extrapolation."
+                    "while losing, on a rolling-origin comparison, to a "
+                    "correctly specified trend extrapolation."
                 ),
             }
         )
