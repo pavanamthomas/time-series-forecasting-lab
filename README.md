@@ -29,6 +29,8 @@ This laboratory answers a forecasting question the way I would answer it in a re
 
 The code is organised so that a misspecified model can be shown to look acceptable in sample and then lose to a simpler benchmark out of sample. That comparison is the point of the repository. Complex models are not treated as automatically superior.
 
+Open work: [`ROADMAP.md`](ROADMAP.md) and GitHub Issues. Recorded failures: [`docs/failures_and_corrections.md`](docs/failures_and_corrections.md). Process: [`docs/lab_process.md`](docs/lab_process.md).
+
 ---
 
 ## Problem
@@ -147,7 +149,8 @@ Interview-style protocol: [`FORECAST_VALIDATION_PLAYBOOK.md`](FORECAST_VALIDATIO
 |---|---|
 | `tests/test_dgp.py` | Five labelled simulated series; DGP properties |
 | `tests/test_stationarity.py` | ADF rejects a unit root on a stationary AR (usual case) |
-| `tests/test_arima.py` | ARIMA(1,0,0) recovers a plausible AR(1) coefficient |
+| `tests/test_arima.py` | ARIMA(1,0,0) recovers a plausible AR(1) coefficient; undifferenced AR on a trend has a large AR root |
+| `tests/test_trend_misspecification.py` | Trend extrapolation beats undifferenced ARIMA out of sample on the trend DGP |
 | `tests/test_metrics.py` | Naive-forecast errors are finite; MAPE/MASE guards |
 | `tests/test_volatility.py` | Squared-return ACF lag 1 is positive more often than white noise |
 | `tests/test_forecast_no_leakage.py` | Fits at origin t cannot see y_s for s > t |
@@ -189,6 +192,9 @@ scripts/run_all.py  regenerate figures and tables
 tests/              specification and leakage tests
 notebooks/          workflow notebook
 docs/data_policy.md synthetic-data rules
+docs/failures_and_corrections.md recorded misspecification
+docs/lab_process.md issue and test discipline
+ROADMAP.md open bounds
 ```
 
 ---
