@@ -1,5 +1,7 @@
 # Time-Series Forecasting Lab
 
+[![CI](https://github.com/pavanamthomas/time-series-forecasting-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/pavanamthomas/time-series-forecasting-lab/actions)
+
 Reproducible time-series modelling, forecasting, diagnostics, rolling validation, and volatility analysis.
 
 **Author:** Dr. Pavanam Thomas ([GitHub](https://github.com/pavanamthomas), thomaspavanam@gmail.com)
