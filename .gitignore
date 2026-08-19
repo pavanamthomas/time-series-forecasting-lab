@@ -47,3 +47,7 @@ data/simulated/*.csv
 outputs/figures/*.png
 outputs/tables/*.csv
 outputs/tables/*.txt
+!data/simulated/.gitkeep
+!outputs/README.md
+!outputs/figures/.gitkeep
+!outputs/tables/.gitkeep
