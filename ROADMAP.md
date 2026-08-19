@@ -20,10 +20,10 @@ Details: `docs/failures_and_corrections.md`.
 
 ## Open (issues)
 
-1. Break date is a DGP parameter. A search for an unknown T_b (Bai–Perron or related) is a different procedure and is not implemented.
-2. GARCH QMLE uses a Gaussian quasi-likelihood. Sandwich standard errors and t-innovations are not implemented.
-3. Interval coverage is not Monte Carlo-calibrated for every forecaster; intervals inherit the model’s innovation assumption.
-4. Multivariate series, exogenous regressors, and genuine market data are out of scope.
+1. The sup-F search locates a level shift; Andrews critical values for the sup statistic are not tabulated.
+2. Interval coverage is checked for ARIMA(1,0,0) one-step Gaussian bands on a stationary AR DGP, not for every forecaster.
+3. GARCH sandwich SEs are numerical (finite-difference scores). t-innovations and leverage are not implemented.
+4. Multivariate series and genuine market data remain out of scope.
 
 ## Explicitly not in scope
 
