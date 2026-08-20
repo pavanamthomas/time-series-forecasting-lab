@@ -29,7 +29,7 @@ This laboratory answers a forecasting question by separating specification from 
 
 The code is organised so that a misspecified model can be shown to look acceptable in sample and then lose to a simpler benchmark out of sample. That comparison is the point of the repository. Complex models are not treated as automatically superior.
 
-Open work: [`ROADMAP.md`](ROADMAP.md) and GitHub Issues. Recorded failures: [`docs/failures_and_corrections.md`](docs/failures_and_corrections.md). Process: [`docs/lab_process.md`](docs/lab_process.md).
+Remaining bounds: [`ROADMAP.md`](ROADMAP.md) (issues #2–#5 are closed). Recorded failures: [`docs/failures_and_corrections.md`](docs/failures_and_corrections.md). Process: [`docs/lab_process.md`](docs/lab_process.md).
 
 ---
 
@@ -49,7 +49,7 @@ The laboratory uses five synthetic processes chosen because they break different
 
 ---
 
-## Skills demonstrated
+## What is in the laboratory
 
 - Problem formalisation: horizon, origin, information set.
 - Exploratory description of trend, seasonality, and transformations without calling that description a forecast.
