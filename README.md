@@ -14,9 +14,9 @@ Related laboratories: [quantitative-finance-models](https://github.com/pavanamth
 
 ---
 
-## Recruiter first look
+## Forecast validation sequence
 
-This laboratory answers a forecasting question the way I would answer it in a research or risk-modelling interview:
+This laboratory answers a forecasting question by separating specification from evaluation:
 
 1. State the decision (horizon, loss, what must not leak).
 2. Write down the DGP or the maintained statistical model.

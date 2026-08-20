@@ -18,9 +18,13 @@ Current as of August 2026.
 
 Details: `docs/failures_and_corrections.md`.
 
-## Open (issues)
+## Remaining bounds
 
-1. The sup-F search locates a level shift; Andrews critical values for the sup statistic are not tabulated.
+Issues #2–#4 were closed after `sup_chow` search, ARIMA one-step coverage,
+and numerical GARCH sandwich SEs were added. Still unimplemented:
+
+1. The sup-F search locates a level shift; Andrews critical values for the sup statistic are not tabulated
+   ([issue #5](https://github.com/pavanamthomas/time-series-forecasting-lab/issues/5)).
 2. Interval coverage is checked for ARIMA(1,0,0) one-step Gaussian bands on a stationary AR DGP, not for every forecaster.
 3. GARCH sandwich SEs are numerical (finite-difference scores). t-innovations and leverage are not implemented.
 4. Multivariate series and genuine market data remain out of scope.
