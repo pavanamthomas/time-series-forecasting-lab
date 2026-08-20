@@ -88,7 +88,7 @@ I ask whether coefficients, residual variance, and rolling errors are stable acr
 
 For a suspected level shift I do not “test for a break” by peeking at the whole sample and then pretending the date was known—unless, as in this laboratory, the date **is** known because it is part of the DGP. Given a known T_b I split the sample and I compute a Chow statistic for a linear specification. I also forecast the post-break window using only pre-break information, which is the honest pre-break predictor.
 
-If the DGP did not give me T_b, I would treat break search as a multiple-testing problem (Quandt/Andrews), which this laboratory does not implement.
+If the DGP did not give me T_b, I treat break search as a multiple-testing problem. `sup_chow` maximises a Chow statistic on a trimmed grid inside the estimation window. Andrews critical values for that supremum are not tabulated.
 
 ## I report forecast uncertainty
 

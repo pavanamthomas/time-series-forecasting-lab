@@ -60,22 +60,18 @@ The laboratory uses five synthetic processes chosen because they break different
 - Analytic and simulation-based forecast intervals, with the assumption written next to the interval.
 - Expanding- and rolling-origin evaluation with a no-future-data contract.
 - Residual diagnostics including Ljung–Box.
-- Known-break Chow illustration and split-sample comparison.
+- Known-break Chow illustration, split-sample comparison, and a trimmed-window `sup_chow` search (no Andrews p-values).
 - Naive, seasonal naive, and mean benchmarks on every comparison that claims forecast skill.
+- Compact Gaussian GARCH(1,1) QMLE with numerical sandwich standard errors (SciPy, no `arch` package).
 - RMSE, MAE, MAPE (when scale-appropriate), and MASE.
-- Gaussian GARCH(1,1) quasi-maximum likelihood implemented with SciPy, without the `arch` package.
 
 ---
 
 ## Methods
 
-The working sequence is:
+At origin t the information set is {y_s : s ≤ t}. A forecast ŷ_{t+h|t} is a function of that set only.
 
-**Problem → formalisation → assumptions → computation/estimation → validation → interpretation → limitations**
-
-Formalisation: at origin t the information set is {y_s : s ≤ t}. A forecast ŷ_{t+h|t} is a function of that set only.
-
-Assumptions are model-specific and are stated in the module docstrings. Shared maintained conditions for the synthetic DGPs are Gaussian innovations, correct seasonality period when seasonality is present, and a known break date in the break example.
+Assumptions are model-specific and are stated in the module docstrings. Shared maintained conditions for the synthetic DGPs are Gaussian innovations and a correct seasonality period when seasonality is present. The break example still ships a known DGP date; `sup_chow` can search for T_b on a trimmed estimation window.
 
 Estimation uses `statsmodels` for ARIMA/SARIMA and Holt–Winters, NumPy/SciPy for OLS trend and GARCH(1,1) QMLE, and `scikit-learn`'s `TimeSeriesSplit` only as an independent expanding-origin cross-check.
 
@@ -110,9 +106,9 @@ Do not cite these paths as empirical results. After `python scripts/run_all.py`,
 
 - Innovations in the DGPs are Gaussian and independent of the past, except that GARCH makes the *conditional scale* dependent on the past.
 - The seasonal period is 12 when seasonality is present.
-- The structural-break date is known because it is a DGP parameter. A test that searches for T_b is a different procedure.
+- The break DGP still records a known date for Chow illustrations. `sup_chow` searches a trimmed grid inside the estimation window; Andrews critical values for the sup statistic are not tabulated ([issue #5](https://github.com/pavanamthomas/time-series-forecasting-lab/issues/5)).
 - MAPE is omitted when any realised value is too close to zero.
-- GARCH(1,1) QMLE assumes a zero conditional mean and uses a Gaussian quasi-likelihood. Standard errors are not sandwich-robust in this implementation.
+- GARCH(1,1) QMLE assumes a zero conditional mean and uses a Gaussian quasi-likelihood. Numerical sandwich standard errors (`garch11_sandwich_se`) sit beside the QMLE; they are finite-difference OPG/Hessian, not analytic scores. t-innovations and leverage are not implemented.
 - Forecast intervals inherit the model's innovation assumption. They are not distribution-free.
 
 ---
@@ -178,8 +174,8 @@ python scripts/run_all.py
 - ARMA orders are chosen to match or to misspecify a known DGP. There is no automated order search.
 - ADF has low power near the unit-root boundary; a non-rejection is not proof of integration.
 - Holt–Winters intervals are Monte Carlo intervals under residual simulation, not analytic ARIMA intervals.
-- GARCH is Gaussian (1,1) QMLE. No leverage, no t-innovations, no realised-volatility comparison.
-- Chow tests here condition on a known break date and iid Gaussian errors in a linear specification.
+- GARCH is Gaussian (1,1) QMLE with numerical sandwich SEs. No leverage, no t-innovations, no realised-volatility comparison.
+- Known-date Chow illustrations still condition on the DGP break and iid Gaussian errors. The sup-Chow search does not supply Andrews p-values.
 - Rolling evaluation uses a modest number of origins so that CI remains tractable. It is a validation design, not an exhaustive backtest.
 
 ---
