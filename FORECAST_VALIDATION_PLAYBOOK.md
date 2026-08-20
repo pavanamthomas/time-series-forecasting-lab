@@ -1,6 +1,6 @@
 # Forecast validation playbook
 
-This is the protocol I use for a univariate forecasting problem. It is written in the first person because that is how I would walk it in a technical interview. The laboratory implements the protocol on **simulated** series; the same sequence applies when the series is observational, with the additional burden of saying what in the world the DGP is approximating.
+This is the protocol I use for a univariate forecasting problem. The laboratory implements it on **simulated** series; the same sequence applies when the series is observational, with the additional burden of saying what in the world the DGP is approximating.
 
 I do not treat a more heavily parameterised model as superior by default. I always keep a naive benchmark. I never report in-sample fit as if it were out-of-sample forecast performance.
 
