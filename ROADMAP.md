@@ -8,6 +8,7 @@ Current as of August 2026.
 - Expanding/rolling-origin evaluation with a no-future-data contract.
 - Naive, seasonal naive, and mean benchmarks on comparisons that claim forecast skill.
 - Compact Gaussian GARCH(1,1) QMLE without the `arch` package.
+- Monte Carlo null quantile of the sup-Chow statistic under iid Gaussian, no break.
 - CI: `python -m pytest` and `python scripts/run_all.py`.
 
 ## Failures that are part of the design
@@ -20,11 +21,11 @@ Details: `docs/failures_and_corrections.md`.
 
 ## Remaining bounds
 
-Issues #2–#4 were closed after `sup_chow` search, ARIMA one-step coverage,
-and numerical GARCH sandwich SEs were added. Still unimplemented:
+Issues #2–#5 were closed after `sup_chow` search, ARIMA one-step coverage,
+numerical GARCH sandwich SEs, and a Monte Carlo null quantile for the sup
+statistic were added. Still unimplemented:
 
-1. The sup-F search locates a level shift; Andrews critical values for the sup statistic are not tabulated
-   ([issue #5](https://github.com/pavanamthomas/time-series-forecasting-lab/issues/5)).
+1. Andrews tabulated critical values for other trimming fractions are not implemented. The laboratory uses a Monte Carlo quantile under iid N(0,1) (`sup_chow_null_critical_value`).
 2. Interval coverage is checked for ARIMA(1,0,0) one-step Gaussian bands on a stationary AR DGP, not for every forecaster.
 3. GARCH sandwich SEs are numerical (finite-difference scores). t-innovations and leverage are not implemented.
 4. Multivariate series and genuine market data remain out of scope.

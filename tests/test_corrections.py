@@ -3,12 +3,19 @@
 from __future__ import annotations
 
 import numpy as np
+import pandas as pd
 
 from tsforecast.arima_models import ARIMAForecaster
 from tsforecast.dgp import simulate_stationary_ar, simulate_structural_break
 from tsforecast.interval_coverage import arima100_one_step_coverage
 from tsforecast.metrics import rmse
-from tsforecast.validation import LinearTrendForecaster, forecast_from_origin, sup_chow
+from tsforecast.validation import (
+    LinearTrendForecaster,
+    chow_test,
+    forecast_from_origin,
+    sup_chow,
+    sup_chow_null_critical_value,
+)
 from tsforecast.volatility import fit_garch11, garch11_sandwich_se, simulate_garch11
 
 
@@ -56,3 +63,30 @@ def test_linear_trend_is_the_correction_on_the_trend_dgp() -> None:
         horizon=24,
     )
     assert rmse(test, fc_tr.point) < rmse(test, fc_bad.point)
+
+
+def test_pointwise_chow_on_the_grid_is_not_the_sup_test() -> None:
+    n = 72
+    n_mc = 30
+    crit = sup_chow_null_critical_value(n=n, min_frac=0.2, n_reps=40, seed=1)
+    assert crit["critical_value"] > 0.0
+    rng = np.random.default_rng(42)
+    pointwise_hits = 0
+    sup_hits = 0
+    for _ in range(n_mc):
+        y = pd.Series(rng.normal(0.0, 1.0, size=n))
+        found = sup_chow(y, min_frac=0.2)
+        any_pointwise = False
+        for idx in found.path["break_index"].to_numpy():
+            pval = chow_test(y, int(idx)).p_value
+            if pval is not None and pval < 0.05:
+                any_pointwise = True
+                break
+        if any_pointwise:
+            pointwise_hits += 1
+        if found.f_stat > crit["critical_value"]:
+            sup_hits += 1
+    pointwise_rate = pointwise_hits / n_mc
+    sup_rate = sup_hits / n_mc
+    assert pointwise_rate > 0.15
+    assert sup_rate < pointwise_rate

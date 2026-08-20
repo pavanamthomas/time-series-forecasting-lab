@@ -549,6 +549,43 @@ def sup_chow(
     )
 
 
+def sup_chow_null_critical_value(
+    n: int,
+    *,
+    min_frac: float = 0.2,
+    n_reps: int = 80,
+    alpha: float = 0.05,
+    seed: int = 42,
+) -> dict[str, float]:
+    """Monte Carlo 1-alpha quantile of sup F under iid Gaussian, no break.
+
+    This is a laboratory critical value for the trimming convention used by
+    ``sup_chow``. It is not a tabulated Andrews (1993) number, and it does
+    not apply to other trimming fractions or error distributions.
+    """
+    if n_reps < 20:
+        raise ValueError("n_reps must be at least 20")
+    if not 0.0 < alpha < 1.0:
+        raise ValueError("alpha must lie in (0, 1)")
+    rng = np.random.default_rng(int(seed))
+    stats = np.empty(n_reps, dtype=float)
+    for i in range(n_reps):
+        y = pd.Series(rng.normal(0.0, 1.0, size=int(n)))
+        stats[i] = float(sup_chow(y, min_frac=min_frac).f_stat)
+    crit = float(np.quantile(stats, 1.0 - alpha))
+    return {
+        "critical_value": crit,
+        "n_reps": float(n_reps),
+        "alpha": float(alpha),
+        "n": float(n),
+        "min_frac": float(min_frac),
+        "note": (
+            "Monte Carlo quantile of the sup-Chow statistic under iid N(0,1) "
+            "and no break. Not an Andrews table lookup."
+        ),
+    }
+
+
 def iter_causal_windows(
     n_obs: int,
     min_train: int,

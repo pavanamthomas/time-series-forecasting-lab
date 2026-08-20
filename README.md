@@ -60,7 +60,7 @@ The laboratory uses five synthetic processes chosen because they break different
 - Analytic and simulation-based forecast intervals, with the assumption written next to the interval.
 - Expanding- and rolling-origin evaluation with a no-future-data contract.
 - Residual diagnostics including Ljung–Box.
-- Known-break Chow illustration, split-sample comparison, and a trimmed-window `sup_chow` search (no Andrews p-values).
+- Known-break Chow illustration, split-sample comparison, a trimmed-window `sup_chow` search, and a Monte Carlo null quantile of the sup statistic under iid Gaussian (not an Andrews table).
 - Naive, seasonal naive, and mean benchmarks on every comparison that claims forecast skill.
 - Compact Gaussian GARCH(1,1) QMLE with numerical sandwich standard errors (SciPy, no `arch` package).
 - RMSE, MAE, MAPE (when scale-appropriate), and MASE.
@@ -106,7 +106,7 @@ Do not cite these paths as empirical results. After `python scripts/run_all.py`,
 
 - Innovations in the DGPs are Gaussian and independent of the past, except that GARCH makes the *conditional scale* dependent on the past.
 - The seasonal period is 12 when seasonality is present.
-- The break DGP still records a known date for Chow illustrations. `sup_chow` searches a trimmed grid inside the estimation window; Andrews critical values for the sup statistic are not tabulated ([issue #5](https://github.com/pavanamthomas/time-series-forecasting-lab/issues/5)).
+- The break DGP still records a known date for Chow illustrations. `sup_chow` searches a trimmed grid inside the estimation window. Rejection of the sup uses a Monte Carlo quantile under iid N(0,1) (`sup_chow_null_critical_value`), not tabulated Andrews (1993) values.
 - MAPE is omitted when any realised value is too close to zero.
 - GARCH(1,1) QMLE assumes a zero conditional mean and uses a Gaussian quasi-likelihood. Numerical sandwich standard errors (`garch11_sandwich_se`) sit beside the QMLE; they are finite-difference OPG/Hessian, not analytic scores. t-innovations and leverage are not implemented.
 - Forecast intervals inherit the model's innovation assumption. They are not distribution-free.
@@ -175,7 +175,7 @@ python scripts/run_all.py
 - ADF has low power near the unit-root boundary; a non-rejection is not proof of integration.
 - Holt–Winters intervals are Monte Carlo intervals under residual simulation, not analytic ARIMA intervals.
 - GARCH is Gaussian (1,1) QMLE with numerical sandwich SEs. No leverage, no t-innovations, no realised-volatility comparison.
-- Known-date Chow illustrations still condition on the DGP break and iid Gaussian errors. The sup-Chow search does not supply Andrews p-values.
+- Known-date Chow illustrations still condition on the DGP break and iid Gaussian errors. The sup-Chow critical value is a Monte Carlo quantile under iid N(0,1) for the sample size and trim used in the test, not an Andrews table.
 - Rolling evaluation uses a modest number of origins so that CI remains tractable. It is a validation design, not an exhaustive backtest.
 
 ---
