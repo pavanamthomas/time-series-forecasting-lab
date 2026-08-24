@@ -1,1 +1,5 @@
 blank_issues_enabled: true
+contact_links:
+  - name: Walk-forward limits already listed
+    url: https://github.com/pavanamthomas/time-series-forecasting-lab/blob/main/ROADMAP.md
+    about: Horizons, leakage paths, and evaluation designs that remain out of this lab.
