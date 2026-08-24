@@ -1,12 +1,7 @@
-# Laboratory process
+# How this lab records work
 
-Work is recorded in this order:
+Forecasting claims here are claims about a walk-forward information set. Write the origin date, the horizon, and what would constitute leakage before changing a model or a metric.
 
-1. A failure, limitation, or identification question is written down (GitHub issue and, when it is part of the teaching design, `docs/failures_and_corrections.md`).
-2. If the claim is numerical, a test is added that would fail if the claim were reversed.
-3. Code or documentation changes in a commit that states the reason, not the file list.
-4. CI on `main` must pass. Passing CI means the laboratory still runs under the documented commands. It is not evidence about an observational study.
+If the claim is numerical, add a test that would fail if future information entered the fit or the evaluation window. CI on `main` means pytest still passes. It is not a live-forecasting track record.
 
-The public queue is GitHub Issues. The bound on that queue is `ROADMAP.md`.
-
-Do not treat a green badge as a correction. A correction is a change in estimator, specification, or interpretation, locked by a test or by an explicit limitation statement.
+Issues are the public queue. `ROADMAP.md` is the bound. A green badge is not a correction.

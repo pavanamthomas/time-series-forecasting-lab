@@ -1,14 +1,14 @@
 ---
-name: Limitation
-about: Record a bound on what this laboratory identifies or computes
-title: "[limitation] "
+name: Forecast bound
+about: A horizon, process, or evaluation design this lab does not cover
+title: "[bound] "
 labels: ["limitation"]
 ---
 
-## What is limited
+## Forecast claim that is out of reach
 
-## Why this is a bound rather than a bug
+## Origin, horizon, or leakage path involved
 
-## What would be required to go further
+## Series / DGP that already shows the bound
 
-## Related tests or notes
+## What rolling RMSE does not license

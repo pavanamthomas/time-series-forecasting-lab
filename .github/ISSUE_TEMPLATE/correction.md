@@ -1,14 +1,14 @@
 ---
-name: Correction
-about: A documented failure and the correction that follows from it
+name: Forecast correction
+about: In-sample fit treated as skill, or a leak, and the evaluation change
 title: "[correction] "
 labels: ["correction"]
 ---
 
-## What failed
+## What looked like forecast skill
 
-## Diagnostic or counterexample
+## How future information or a naive benchmark exposed it
 
-## Correction (estimator, specification, or interpretation)
+## Correction of split, difference, or metric
 
-## What remains unknown
+## What remains unknown about live series

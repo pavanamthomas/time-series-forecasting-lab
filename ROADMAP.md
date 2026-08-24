@@ -1,6 +1,6 @@
 # Roadmap
 
-Current as of August 2026.
+Walk-forward and leakage limits that are still out of this lab (August 2026).
 
 ## In scope now
 

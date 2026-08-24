@@ -4,19 +4,18 @@
 
 Reproducible time-series modelling, forecasting, diagnostics, rolling validation, and volatility analysis.
 
-**Author:** Dr. Pavanam Thomas ([GitHub](https://github.com/pavanamthomas), thomaspavanam@gmail.com)
-
-**License:** MIT. Copyright 2026 Dr. Pavanam Thomas.
+Dr. Pavanam Thomas · [pavanamthomas](https://github.com/pavanamthomas) · thomaspavanam@gmail.com  
+MIT License · Copyright 2026
 
 **Data:** Every series in this repository is **simulated** from a documented data-generating process (DGP). Nothing here is market data, survey data, or an empirical claim about a real economy.
 
-Related laboratories: [quantitative-finance-models](https://github.com/pavanamthomas/quantitative-finance-models), [statistical-reasoning-validation](https://github.com/pavanamthomas/statistical-reasoning-validation).
+Valuation identities that sometimes use a forecast as an input: [quantitative-finance-models](https://github.com/pavanamthomas/quantitative-finance-models). Coverage language that must not be borrowed from a rolling RMSE: [statistical-reasoning-validation](https://github.com/pavanamthomas/statistical-reasoning-validation).
 
 ---
 
 ## Forecast validation sequence
 
-This laboratory answers a forecasting question by separating specification from evaluation:
+Forecast skill is not in-sample fit. The sequence used here is:
 
 1. State the decision (horizon, loss, what must not leak).
 2. Write down the DGP or the maintained statistical model.
