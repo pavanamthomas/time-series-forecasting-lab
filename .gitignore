@@ -29,10 +29,7 @@ htmlcov/
 # Notebook checkpoints
 .ipynb_checkpoints/
 
-# Editor and agent tooling
-.cursor/
-.claude/
-.codex/
+# Editor
 .idea/
 .vscode/
 *.swp
